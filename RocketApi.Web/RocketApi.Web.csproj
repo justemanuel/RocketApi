@@ -14,8 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RocketApi.Contracts\RocketApi.Contracts.csproj" />
-    <ProjectReference Include="..\RocketApi.Entities\RocketApi.Entities.csproj" />
     <ProjectReference Include="..\RocketApi.Repositories\RocketApi.Repositories.csproj" />
   </ItemGroup>
 

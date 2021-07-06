@@ -1,31 +1,27 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RocketApi.Contracts;
-using System;
+using RocketApi.Web.Models.DTOs;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using RocketApi.Entities.Models;
-using RocketApi.Web.Models.DTOs;
 
 namespace RocketApi.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IOwnerController : ControllerBase
+    public class OwnerController : ControllerBase
     {
         private readonly IRepositoryWrapper _repoWrapper;
         private readonly IMapper _mapper;
 
-        public IOwnerController(IRepositoryWrapper repoWrapper, IMapper mapper)
+        public OwnerController(IRepositoryWrapper repoWrapper, IMapper mapper)
         {
             _repoWrapper = repoWrapper;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             var items = _repoWrapper.Owner.FindAll();
 
@@ -35,7 +31,7 @@ namespace RocketApi.Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public IActionResult Get(int id)
         {
             var owner = _repoWrapper.Owner.FindById(id);
 

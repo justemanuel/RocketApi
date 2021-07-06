@@ -27,14 +27,28 @@ namespace RocketApi.Web
 
         public IConfiguration Configuration { get; }
 
+        readonly string CorsPolicy = "MyCorsPolict";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: CorsPolicy,
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
 
             services.AddDbContext<RocketContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                c => c.MigrationsAssembly("RocketApi.Web")));
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -44,7 +58,7 @@ namespace RocketApi.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RocketContext context)
         {
             if (env.IsDevelopment())
             {
@@ -53,9 +67,14 @@ namespace RocketApi.Web
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RocketApi.Web v1"));
             }
 
+            // Ensure Migrations
+            context.Database.Migrate();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(CorsPolicy);
 
             app.UseAuthorization();
 
