@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RocketApi.Contracts\RocketApi.Contracts.csproj" />
+    <ProjectReference Include="..\RocketApi.Entities\RocketApi.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
