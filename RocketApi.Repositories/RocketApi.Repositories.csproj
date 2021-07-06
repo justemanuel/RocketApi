@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RocketApi.Contracts\RocketApi.Contracts.csproj" />
-    <ProjectReference Include="..\RocketApi.Entities\RocketApi.Entities.csproj" />
   </ItemGroup>
 
 </Project>
