@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RocketApi.Entities.Models;
 
 namespace RocketApi.Entities
 {
-    public class RocketContext : DbContext
+    public class RocketContext : IdentityDbContext
     {
         public RocketContext(DbContextOptions<RocketContext> options)
             : base(options)
