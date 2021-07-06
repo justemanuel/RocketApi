@@ -1,4 +1,4 @@
-﻿namespace RocketApi.Web.Config
+﻿namespace RocketApi.Services
 {
     public class JwtConfig
     {

@@ -10,6 +10,7 @@ namespace RocketApi.Repositories
         private IOwnerRepository _owner;
         private IBlogRepository _blog;
         private IPostRepository _post;
+        private IUserRepository _user;
 
         public RepositoryWrapper(RocketContext context)
         {
@@ -58,6 +59,19 @@ namespace RocketApi.Repositories
                 }
 
                 return _post;
+            }
+        }
+
+        public IUserRepository User
+        {
+            get
+            {
+                if (_user == null)
+                {
+                    _user = new UserRepository(_context);
+                }
+
+                return _user;
             }
         }
     }

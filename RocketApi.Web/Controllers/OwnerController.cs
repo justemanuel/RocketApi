@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RocketApi.Contracts;
 using RocketApi.Web.Models.DTOs;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace RocketApi.Web.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class OwnerController : ControllerBase

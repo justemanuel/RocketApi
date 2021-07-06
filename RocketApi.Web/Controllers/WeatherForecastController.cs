@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace RocketApi.Web.Controllers
@@ -17,15 +18,23 @@ namespace RocketApi.Web.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        IHttpClientFactory _factory;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IHttpClientFactory factory)
         {
             _logger = logger;
+            _factory = factory;
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            var client = _factory.CreateClient();
+
+            var result = client.GetStreamAsync("");
+
+
+
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

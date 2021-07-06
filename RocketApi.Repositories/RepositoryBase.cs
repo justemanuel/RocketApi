@@ -2,8 +2,10 @@
 using RocketApi.Contracts;
 using RocketApi.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace RocketApi.Repositories
 {
@@ -26,20 +28,20 @@ namespace RocketApi.Repositories
             _context.Set<T>().Remove(entity);
         }
 
-        public IQueryable<T> FindAll()
+        public async Task<IEnumerable<T>> FindAll()
         {
-            return _context.Set<T>().AsNoTracking();
+            return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
 
-        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
+        public async Task<IEnumerable<T>> FindByCondition(Expression<Func<T, bool>> expression)
         {
-            return _context.Set<T>().Where(expression)
-                .AsNoTracking();
+            return await _context.Set<T>().Where(expression)
+                .AsNoTracking().ToListAsync();
         }
 
-        public T FindById(int id)
+        public async Task<T> FindById(int id)
         {
-            return _context.Set<T>().Find(id);
+            return await _context.Set<T>().FindAsync(id);
         }
 
         public void Update(T entity)

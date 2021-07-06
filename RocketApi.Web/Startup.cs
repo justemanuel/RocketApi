@@ -1,25 +1,20 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RocketApi.Contracts;
 using RocketApi.Entities;
 using RocketApi.Repositories;
+using RocketApi.Services;
 using RocketApi.Web.Config;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace RocketApi.Web
 {
@@ -80,9 +75,12 @@ namespace RocketApi.Web
             // End Identity
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
-            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<ITokenHandlerService, TokenHandlerService>();
 
-            services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddHttpClient();
+            services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve); ;
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RocketApi.Web", Version = "v1" });
@@ -101,7 +99,7 @@ namespace RocketApi.Web
 
             // Ensure Migrations
             context.Database.Migrate();
-
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseRouting();

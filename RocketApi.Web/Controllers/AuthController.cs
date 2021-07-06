@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RocketApi.Services;
+using RocketApi.Web.Config;
 using RocketApi.Web.Models.DTOs;
 using System;
 using System.Collections.Generic;
@@ -14,10 +16,12 @@ namespace RocketApi.Web.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ITokenHandlerService _tokenService;
 
-        public AuthController(UserManager<IdentityUser> userManager)
+        public AuthController(UserManager<IdentityUser> userManager, ITokenHandlerService tokenService)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         [HttpPost]
@@ -39,7 +43,7 @@ namespace RocketApi.Web.Controllers
                 }, dto.Password);
 
                 if (created.Succeeded) return Ok();
-                return StatusCode(500, "Error creating user");
+                return BadRequest(created.Errors.Select(x => x.Description));
             }
             else
             {
@@ -49,9 +53,63 @@ namespace RocketApi.Web.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> Login([FromBody] UserRegisterDto dto)
+        public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
         {
+            if (ModelState.IsValid)
+            {
+                var validUser = await _userManager.FindByEmailAsync(dto.UserName);
+                if (validUser == null)
+                {
+                    return BadRequest(new UserLoginResponseDto()
+                    {
+                        Logged = false,
+                        Errors = new List<string>()
+                        {
+                            "Incorrect username"
+                        }
+                    });
+                }
 
+                var isCorrect = await _userManager.CheckPasswordAsync(validUser, dto.Password);
+
+                if (isCorrect)
+                {
+                    var pars = new TokenParameters()
+                    {
+                        Id = validUser.Id,
+                        PasswordHash = validUser.PasswordHash,
+                        UserName = validUser.UserName
+                    };
+
+                    var token = _tokenService.GenerateJwtToken(pars);
+
+                    return Ok(new UserLoginResponseDto()
+                    {
+                        Logged = true,
+                        Token = token
+                    });
+                }
+
+                return BadRequest(new UserLoginResponseDto()
+                {
+                    Logged = false,
+                    Errors = new List<string>()
+                    {
+                        "Incorret password"
+                    }
+                });
+            }
+            else
+            {
+                return BadRequest(new UserLoginResponseDto()
+                {
+                    Logged = false,
+                    Errors = new List<string>()
+                    {
+                        "Incorrect username or password"
+                    }
+                });
+            }
         }
     }
 }

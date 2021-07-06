@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RocketApi.Entities;
 
 namespace RocketApi.Web.Migrations
 {
     [DbContext(typeof(RocketContext))]
-    partial class RocketContextModelSnapshot : ModelSnapshot
+    [Migration("20210706214215_Default value on status created")]
+    partial class Defaultvalueonstatuscreated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

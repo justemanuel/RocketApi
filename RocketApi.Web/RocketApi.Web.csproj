@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RocketApi.Repositories\RocketApi.Repositories.csproj" />
+    <ProjectReference Include="..\RocketApi.Services\RocketApi.Services.csproj" />
   </ItemGroup>
 
 </Project>

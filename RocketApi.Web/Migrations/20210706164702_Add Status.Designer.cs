@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RocketApi.Entities;
 
 namespace RocketApi.Web.Migrations
 {
     [DbContext(typeof(RocketContext))]
-    partial class RocketContextModelSnapshot : ModelSnapshot
+    [Migration("20210706164702_Add Status")]
+    partial class AddStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -312,11 +314,6 @@ namespace RocketApi.Web.Migrations
                     b.Property<string>("Content")
                         .HasMaxLength(280)
                         .HasColumnType("nvarchar(280)");
-
-                    b.Property<DateTime>("Created")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 7, 6, 21, 42, 14, 869, DateTimeKind.Utc).AddTicks(6571));
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

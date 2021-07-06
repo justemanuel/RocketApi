@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RocketApi.Entities;
 
 namespace RocketApi.Web.Migrations
 {
     [DbContext(typeof(RocketContext))]
-    partial class RocketContextModelSnapshot : ModelSnapshot
+    [Migration("20210706161823_Followers")]
+    partial class Followers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,32 +304,6 @@ namespace RocketApi.Web.Migrations
                     b.ToTable("Post");
                 });
 
-            modelBuilder.Entity("RocketApi.Entities.Models.Status", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content")
-                        .HasMaxLength(280)
-                        .HasColumnType("nvarchar(280)");
-
-                    b.Property<DateTime>("Created")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 7, 6, 21, 42, 14, 869, DateTimeKind.Utc).AddTicks(6571));
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Status");
-                });
-
             modelBuilder.Entity("RocketApi.Entities.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -447,18 +423,6 @@ namespace RocketApi.Web.Migrations
                     b.Navigation("Blog");
                 });
 
-            modelBuilder.Entity("RocketApi.Entities.Models.Status", b =>
-                {
-                    b.HasOne("RocketApi.Entities.Models.User", "User")
-                        .WithMany("Status")
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("FK_User_Status")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("RocketApi.Entities.Models.Blog", b =>
                 {
                     b.Navigation("Posts");
@@ -474,8 +438,6 @@ namespace RocketApi.Web.Migrations
                     b.Navigation("Followee");
 
                     b.Navigation("Follower");
-
-                    b.Navigation("Status");
                 });
 #pragma warning restore 612, 618
         }
