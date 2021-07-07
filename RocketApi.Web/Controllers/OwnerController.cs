@@ -1,24 +1,23 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RocketApi.Contracts;
 using RocketApi.Web.Models.DTOs;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 
 namespace RocketApi.Web.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class OwnerController : ControllerBase
     {
         private readonly IRepositoryWrapper _repoWrapper;
         private readonly IMapper _mapper;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public OwnerController(IRepositoryWrapper repoWrapper, IMapper mapper)
+        public OwnerController(UserManager<IdentityUser> userManager, IRepositoryWrapper repoWrapper, IMapper mapper)
         {
             _repoWrapper = repoWrapper;
             _mapper = mapper;

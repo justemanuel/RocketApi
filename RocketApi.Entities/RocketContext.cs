@@ -5,7 +5,7 @@ using System;
 
 namespace RocketApi.Entities
 {
-    public class RocketContext : IdentityDbContext
+    public class RocketContext : IdentityDbContext<ApplicationUser>
     {
         public RocketContext(DbContextOptions<RocketContext> options)
             : base(options)

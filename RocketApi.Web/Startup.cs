@@ -69,7 +69,7 @@ namespace RocketApi.Web
                     ValidateLifetime = true
                 };
             });
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<ApplicationUser>(options =>
                 options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<RocketContext>();
             // End Identity

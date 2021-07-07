@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RocketApi.Contracts;
 using RocketApi.Web.Models.DTOs;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -62,9 +63,21 @@ namespace RocketApi.Web.Controllers
         [Route("feed")]
         public async Task<IActionResult> GetFolloweesStatuses()
         {
-            var statuses = await _repoWrapper.User.GetFolloweesStatuses(2);
+            var statuses = await _repoWrapper.User.GetFolloweesStatuses(1);
 
-            return Ok(statuses);
+            List<StatusDetails> feed = new List<StatusDetails>();
+
+            foreach (var item in statuses)
+            {
+                feed.Add(new StatusDetails()
+                {
+                    UserName = item.User.Name,
+                    Date = item.Created,
+                    Content = item.Content
+                });
+            }
+
+            return Ok(feed);
         }
     }
 }
