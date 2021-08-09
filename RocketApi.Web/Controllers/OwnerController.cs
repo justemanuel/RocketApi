@@ -15,9 +15,9 @@ namespace RocketApi.Web.Controllers
     {
         private readonly IRepositoryWrapper _repoWrapper;
         private readonly IMapper _mapper;
-        private readonly UserManager<IdentityUser> _userManager;
+        //private readonly UserManager<IdentityUser> _userManager;
 
-        public OwnerController(UserManager<IdentityUser> userManager, IRepositoryWrapper repoWrapper, IMapper mapper)
+        public OwnerController(/*UserManager<IdentityUser> userManager,*/ IRepositoryWrapper repoWrapper, IMapper mapper)
         {
             _repoWrapper = repoWrapper;
             _mapper = mapper;

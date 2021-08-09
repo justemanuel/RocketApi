@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RocketApi.Contracts;
 using RocketApi.Entities;
+using RocketApi.Entities.Models;
 using RocketApi.Repositories;
 using RocketApi.Services;
 using RocketApi.Web.Config;
@@ -47,6 +48,10 @@ namespace RocketApi.Web
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 c => c.MigrationsAssembly("RocketApi.Web")));
 
+            services.AddDbContext<PgContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("PostgreConnection"),
+                c => c.MigrationsAssembly("RocketApi.Web")));
+
             // Identity
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
             services.AddAuthentication(options =>
@@ -69,9 +74,10 @@ namespace RocketApi.Web
                     ValidateLifetime = true
                 };
             });
-            services.AddDefaultIdentity<ApplicationUser>(options =>
-                options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<RocketContext>();
+            //services.AddDefaultIdentity<ApplicationUser>(options =>
+            //    options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<RocketContext>();
+
             // End Identity
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
